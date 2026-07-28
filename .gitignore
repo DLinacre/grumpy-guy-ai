@@ -33,3 +33,6 @@ lerna-debug.log*
 
 # Cloudflare / Wrangler
 .wrangler
+
+# Test coverage
+coverage

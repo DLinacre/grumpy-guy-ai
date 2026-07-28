@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+
+/**
+ * Tailwind v4 CSS-first configuration.
+ *
+ * v4 has no `tailwind.config.js` by default: design tokens are declared here with
+ * `@theme` and are emitted as CSS custom properties, so every colour below is usable
+ * both as a utility (`bg-ink`) and as `var(--color-ink)`. The palette is lifted
+ * verbatim from the legacy `src/styles.css` so the rendered design is unchanged.
+ */
+@theme {
+  --color-ink: #111110;
+  --color-bone: #f5f0e7;
+  --color-ember: #ff623d;
+  --color-ember-soft: #ff8a6f;
+  --color-ash: #aaa39b;
+  --color-ash-dim: #928b83;
+  --color-slate-line: #383431;
+  --color-slate-edge: #403c38;
+  --color-slate-rule: #302d2a;
+  --color-field: #1d1c1a;
+  --color-field-deep: #141312;
+  --color-surface: #211f1d;
+  --color-surface-alt: #1a1917;
+  --color-outline: #504940;
+  --color-outline-soft: #4c4641;
+  --color-quote: #bbb4ac;
+  --color-quote-dim: #827c74;
+  --color-list: #d6d0c7;
+  --color-label: #d4cdc4;
+  --color-control: #c7c0b8;
+  --color-toggle: #ccc5bc;
+  --color-muted: #888078;
+  --color-cocoa: #35251e;
+  --color-espresso: #1b100d;
+  --color-espresso-deep: #21120e;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/**
+ * Fonts are linked with `<link rel="preconnect">` + `<link rel="stylesheet">` in
+ * index.html rather than an `@import` here. A CSS `@import` blocks the parser and
+ * serialises stylesheet → font discovery; preconnecting overlaps them instead.
+ */
+
+@layer base {
+  :root {
+    font-family: var(--font-display);
+    color: var(--color-bone);
+    background: var(--color-ink);
+    line-height: 1.45;
+    /*
+     * NOTE: `color-scheme: dark` is deliberately NOT set. It would repaint native
+     * form controls in their dark-UA style, turning the unchecked checkboxes from
+     * white to dark grey — a visible change from the original design.
+     */
+  }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at 85% 8%, var(--color-cocoa) 0, transparent 31rem),
+      var(--color-ink);
+  }
+
+  /*
+   * Tailwind's Preflight resets heading font-size and font-weight to `inherit` so
+   * type scales come from utilities. The legacy stylesheet relied on the browser
+   * default of `bold`, so without this the h1/h2 rendered at weight 400 instead of
+   * 700 — a visible regression. Restored explicitly to preserve the original design.
+   */
+  h1,
+  h2 {
+    font-weight: 700;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  /*
+   * Preflight zeroes margins on form controls. Native checkboxes rely on their UA
+   * margin for vertical rhythm inside a flex row; without it they stretch to the
+   * full line box (17px -> 23px tall). Restores the user-agent values.
+   */
+  input[type='checkbox'],
+  input[type='radio'] {
+    margin: 3px 3px 3px 4px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* Keyboard focus is visible on every interactive element, which the legacy
+     stylesheet suppressed with a blanket `outline: none` on inputs. */
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Honours the user's explicit in-app preference. */
+  .reduce-motion *,
+  .reduce-motion *::before,
+  .reduce-motion *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Accessible label that stays available to screen readers. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+/* Also respect the OS-level setting, which the original never checked. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

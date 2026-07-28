@@ -33,8 +33,11 @@ Experience Grumpy Guy AI deployed live on GitHub Pages:
 
 ## 🛠 Tech Stack & Architecture
 
-- **Frontend**: React 19, TypeScript, Vite, CSS Grid/Flexbox with HSL dark mode palette.
-- **Testing**: Vitest for fast, reliable unit test coverage.
+- **Frontend**: React 19, TypeScript (strict), Vite 7, **Tailwind CSS v4** (CSS-first `@theme` tokens).
+- **Architecture**: feature-sliced modules — `src/features/*` (grumble, auth, preferences),
+  `src/shared/*` (domain, config, lib, hooks, ui), `src/app/*` (shell + styles).
+- **Testing**: Vitest + Testing Library (jsdom), 123 tests covering the app, hooks, reducer,
+  storage and the Cloudflare Worker.
 - **Backend (Optional API)**: Cloudflare Workers with Hono routing & OpenAI API integration.
 - **Auth & Database (Optional)**: Supabase Auth & PostgreSQL.
 - **Deployment**: Automated CI/CD deployment to **GitHub Pages** via GitHub Actions.
@@ -64,6 +67,11 @@ Experience Grumpy Guy AI deployed live on GitHub Pages:
    npm test
    ```
 
+   Or run the full gate (type-check + lint + tests):
+   ```bash
+   npm run verify
+   ```
+
 5. **Build for production**:
    ```bash
    npm run build
@@ -76,6 +84,27 @@ Experience Grumpy Guy AI deployed live on GitHub Pages:
 Deployment is fully automated using GitHub Actions. Whenever code is pushed to the `main` branch, `.github/workflows/deploy.yml` triggers a build and deploys the generated static assets to GitHub Pages.
 
 ---
+
+## 🧱 Project structure
+
+```
+src/
+  app/           application shell and Tailwind theme
+  features/
+    grumble/     api client, reducer, session hook, UI
+    auth/        Supabase session hook and sign-in dialog
+    preferences/ persisted local state and settings panel
+  shared/
+    domain/      canonical types + runtime guards
+    config/      validated environment
+    lib/         storage, result helpers, lazy Supabase client
+    hooks/ ui/   speech hook, error boundary
+  lib/ types/    backwards-compatible re-export shims
+functions/api/   Cloudflare Worker (Hono + Zod)
+```
+
+Refactor notes: [`docs/06-refactor-audit.md`](./docs/06-refactor-audit.md) and
+[`docs/07-refactor-report.md`](./docs/07-refactor-report.md).
 
 ## 📄 License
 

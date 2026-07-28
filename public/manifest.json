@@ -1,0 +1,16 @@
+{
+  "name": "Grumpy Guy AI",
+  "short_name": "GrumpyGuy",
+  "description": "Your disagreeable AI copilot — motivation, with complaints.",
+  "start_url": "/grumpy-guy-ai/",
+  "display": "standalone",
+  "background_color": "#111110",
+  "theme_color": "#ff623d",
+  "icons": [
+    {
+      "src": "banner.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

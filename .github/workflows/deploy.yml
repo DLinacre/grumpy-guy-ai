@@ -33,6 +33,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Type-checks the app, the Vite config and the Cloudflare Worker.
+      # The Worker was previously in no tsconfig and so never verified.
+      - name: Type-check
+        run: npm run typecheck
+
+      # The repo declared a lint script but shipped no ESLint config, so this
+      # step could never have passed before.
+      - name: Lint
+        run: npm run lint
+
       - name: Run unit tests
         run: npm test
 
