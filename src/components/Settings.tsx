@@ -1,0 +1,5 @@
+import type { Preferences, Tone } from '../types';
+export function Settings({ preferences, onChange, onClear }: { preferences: Preferences; onChange: (p: Preferences) => void; onClear: () => void }) {
+ const setTone = (tone: Tone) => onChange({ ...preferences, tone });
+ return <section className="settings"><p className="eyebrow">CONTROL PANEL</p><h2>Calibrate the curmudgeon</h2><div className="tone-row">{(['dry','brutal','supportive'] as Tone[]).map(t => <button key={t} onClick={() => setTone(t)} className={preferences.tone === t ? 'selected' : ''}>{t}</button>)}</div><label className="toggle"><input type="checkbox" checked={preferences.autoplay} onChange={e => onChange({...preferences, autoplay:e.target.checked})}/><span>Read new grumbles aloud</span></label><label className="toggle"><input type="checkbox" checked={preferences.reducedMotion} onChange={e => onChange({...preferences, reducedMotion:e.target.checked})}/><span>Reduce motion</span></label><button className="text-button danger" onClick={onClear}>Clear local history</button></section>;
+}
